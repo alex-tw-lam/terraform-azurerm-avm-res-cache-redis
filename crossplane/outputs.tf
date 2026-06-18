@@ -7,11 +7,13 @@ output "name" {
 }
 
 output "hostname" {
-  value = module.redis.resource.hostname
+  value     = module.redis.resource.hostname
+  sensitive = true
 }
 
 output "ssl_port" {
-  value = module.redis.resource.ssl_port
+  value     = module.redis.resource.ssl_port
+  sensitive = true
 }
 
 output "primary_access_key" {
