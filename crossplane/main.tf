@@ -1,19 +1,16 @@
-module "redis" {
-  source  = "Azure/avm-res-cache-redis/azurerm"
-  version = "0.4.0"
+# Azure Managed Redis (AMR). Azure is retiring the classic azurerm_redis_cache,
+# so we use the native azurerm_managed_redis resource directly (no AVM module
+# exists for AMR yet). Note: AMR exposes only id + hostname (and the default
+# database port); it does NOT export access keys as attributes — access keys are
+# retrieved via a separate listKeys API and access-key auth is off by default
+# (Entra ID / AAD). The OSB binding therefore carries hostname + port.
+resource "azurerm_managed_redis" "this" {
+  name                = var.name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  sku_name            = var.sku_name
 
-  name                 = var.name
-  resource_group_name  = var.resource_group_name
-  location             = var.location
-  sku_name             = var.sku_name
-  capacity             = var.capacity
-  minimum_tls_version  = var.minimum_tls_version
-  enable_telemetry     = false
-
-  # Zones are Premium-only; Basic/Standard must omit them.
-  zones                = var.sku_name == "Premium" ? ["1", "2", "3"] : []
-
-  # Premium-only VNet injection; null is ignored for Basic/Standard.
-  subnet_resource_id           = var.subnet_id
-  public_network_access_enabled = var.subnet_id == null ? true : false
+  default_database {
+    # all defaults: TLS client protocol, OSS cluster, access-key auth disabled
+  }
 }

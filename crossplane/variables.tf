@@ -10,19 +10,7 @@ variable "name" {
   type = string
 }
 
+# AMR encodes the entire size in sku_name (e.g. Balanced_B0/B1/B2).
 variable "sku_name" {
   type = string
-}
-
-variable "capacity" {
-  type = number
-}
-
-variable "minimum_tls_version" {
-  type = string
-}
-
-variable "subnet_id" {
-  type    = string
-  default = null
 }

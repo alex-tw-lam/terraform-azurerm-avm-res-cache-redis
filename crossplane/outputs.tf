@@ -1,27 +1,15 @@
 output "resource_id" {
-  value = module.redis.resource_id
+  value = azurerm_managed_redis.this.id
 }
 
 output "name" {
-  value = module.redis.name
+  value = var.name
 }
 
 output "hostname" {
-  value     = module.redis.resource.hostname
-  sensitive = true
+  value = azurerm_managed_redis.this.hostname
 }
 
-output "ssl_port" {
-  value     = module.redis.resource.ssl_port
-  sensitive = true
-}
-
-output "primary_access_key" {
-  value     = module.redis.resource.primary_access_key
-  sensitive = true
-}
-
-output "primary_connection_string" {
-  value     = module.redis.resource.primary_connection_string
-  sensitive = true
+output "port" {
+  value = azurerm_managed_redis.this.default_database[0].port
 }
